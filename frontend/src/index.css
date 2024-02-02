@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(255 228 230);
+}
+
+body{
+  background-color: rgb(255 228 230);
+}
+
+font-face{
+  font-family: "Font1";
+  src: local("CormorantGaramond-Medium"),
+       url('./fonts/CormorantGaramond-Medium.ttf') format("truetype");
+  font-family: "Font2";
+  src: local("CormorantGaramond-Light"),
+       url('./fonts/CormorantGaramond-Regular.ttf') format("truetype");
+}
+
+.offcanvas1{ 
+  height: max-content !important;
+  width: 80vw !important;
+}
+
+.form-control::placeholder {
+    color: black;
+    font-size: 1.15rem;
+    /* font-weight: 500; */
+}
+
+.head{
+  font-family : "Font1";
+}
+
+.head1{
+  font-family : "Font2";
+}
+
+.container1{
+  height:100vh;
+}
+
+.btn1{
+  --bs-btn-color: rgb(33,37,41);
+  --bs-btn-active-color: rgb(33,37,41);
+  --bs-btn-hover-color: rgba(0,0,0,0.55);
+
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-bg: transparent;
+}
