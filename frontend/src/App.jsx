@@ -15,6 +15,9 @@ import bg3 from './assets/img/cafe.png';
 import bg4 from './assets/img/dessert16.png';
 import bg5 from './assets/img/dessert53.png';
 import bg6 from './assets/img/dessert55.png';
+import Blog1 from './pages/Blog1';
+import Blog2 from './pages/Blog2';
+import Blog3 from './pages/Blog3';
 
 
 function App() {
@@ -33,6 +36,12 @@ function App() {
         <Route path='/reservations' element={<Reservations bg={bg3} />} />
 
         <Route path='/news' element={<News bg={bg4} />} />
+
+        <Route path='/news/sweet-symphony' element={<Blog1 />} />
+
+        <Route path='/news/velvet-truffle' element={<Blog2 />} />
+
+        <Route path='/news/brewed-euphoria' element={<Blog3 />} />
 
         <Route path='/contact' element={<Contact bg={bg6} />} />
 

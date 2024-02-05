@@ -43,12 +43,12 @@ export default function Pictureleft(props) {
                         {props.head}
                     </p>
 
-                    <p className="font-semibold my-3 ">
+                    <p className="font-semibold my-2 ">
                         {props.description}
                     </p>
 
                     <button 
-                    className="my-4 font-bold text-black bg-transparent border-b-4 hover:border-b-0 border-b-rose-500">
+                    className="my-2 font-bold text-black bg-transparent border-b-4 hover:border-b-0 border-b-rose-500">
                         <Link to={props.click} relative="path">
                         {props.button}
                         </Link>
