@@ -1,180 +1,127 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, ButtonGroup, Card } from "react-bootstrap";
-import { CartContext, SessionContext } from "./Context";
 import Login from "../components/Login";
+import { auth, db } from "../firebase";
+import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 export default function Item(props) {
 
-    const user = useContext(SessionContext);
-    const cartContext = useContext(CartContext);
 
     const [login, setLogin] = useState(false);
+    const [quantity, setQuantity] = useState(0);
 
-    const handleAdd = () => {
-        if(user.user==null){
-            setLogin(true);
-        }
-    }
-    const user_id = localStorage.getItem('userid');
-    const menu_item_id = props.id;
-    const [fetchQuant, setFetchQuant] = useState(true)
+    const handleLogin = () => setLogin(true);
+    const handleClose = () => setLogin(false);
 
-    const [quant, setQuant] = useState(0);
-    const [cost, setCost] = useState(0.00);
-    const [alert, setAlert] = useState('');
-    const [showAlert, setShowAlert] = useState(false);
-
-    const add = () =>{
-        axios.post('http://127.0.0.1:8000/home/cart', {
-           user_id: user_id,
-           menu_item_id,
-        })
-        .then( (response) => {
-            setAlert(response.data)
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-                setAlert('');
-            }, 4000)
-            setFetchQuant(true);
-        } )
-    }
-
-    const subtract = () => {
-        if (quant > 0) {
-            if(quant-1 === 0){
-                axios.delete('http://127.0.0.1:8000/home/cart', {
-                data: {
-                    user_id: user_id,
-                    menu_item_id,
-                },
-                })
-                .then( (response) => {
-                    setAlert(response.data)
-                    setShowAlert(true);
-                    setTimeout(() => {
-                        setShowAlert(false);
-                        setAlert('');
-                    }, 4000)
-                    setFetchQuant(true);
-                })
+    const fetchCartItems = async () => {
+        try {
+            if (!auth.currentUser) return;
+            const updatedCartItemDoc = await getDoc(doc(collection(doc(collection(db, 'cart'), auth.currentUser.uid), 'cartItems'), props.id));
+            if (updatedCartItemDoc.exists()) {
+                setQuantity(updatedCartItemDoc.data().quantity);
             }
-            else{
-                axios.post('http://127.0.0.1:8000/home/cart', {
-                user_id: user_id,
-                menu_item_id,
-                quantity: -1, // Subtract one from the quantity
-                })
-                .then( (response) => {
-                    setAlert(response.data)
-                    setShowAlert(true);
-                    setTimeout(() => {
-                        setShowAlert(false);
-                        setAlert('');
-                    }, 4000)
-                    setFetchQuant(true);
-                })
+            else {
+                setQuantity(0);
             }
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
         }
     };
 
-    const handleClose = () => setLogin(false);
 
-    const [img, setImg] = useState([]);
+    const addToCart = async () => {
+        try {
+            const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
+            setDoc(cart, { userUid: auth.currentUser.uid })
+            const cartItemsCollectionRef = collection(cart, 'cartItems');
+            const cartItemDocRef = doc(cartItemsCollectionRef, props.id);
 
-    useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/home/menuimg/${menu_item_id}/`)
-        .then((response) => {
-            const url = `http://127.0.0.1:8000/${response.data.img}`;
-            setImg(url)
-        });
+            const cartItemDoc = await getDoc(cartItemDocRef);
 
-    }, [ menu_item_id ]);
-
-    useEffect(() => {
-
-        if(fetchQuant){
-            axios.get('http://127.0.0.1:8000/home/cart/detail', {
-                params: {
-                    user_id: user_id,
-                    menu_id: menu_item_id,
-                    quantity:1
+            if (cartItemDoc.exists()) {
+                await updateDoc(cartItemDocRef, {
+                    quantity: cartItemDoc.data().quantity + 1
+                });
+            } else {
+                await setDoc(cartItemDocRef, {
+                    itemId: props.id,
+                    quantity: 1
+                });
             }
-            })
-            .then( (response) => {
-                setQuant(response.data[0].quantity)
-                setCost(response.data[0].price)
-                setFetchQuant(false)
-            } )
+            fetchCartItems();
         }
-
-    }, [user_id, menu_item_id, fetchQuant]);
-
-    useEffect( () => {
-        if(fetchQuant){
-            axios.get('http://127.0.0.1:8000/home/cart/quantity', {
-                params: {
-                    user_id: user_id,
-                }
-            })
-            .then((response) => {
-                const newQuant = response.data[0];
-                cartContext.setCart(newQuant); // Using the setCart function from context
-                setFetchQuant(false)
-            });
+        catch (error) {
+            console.error('Error adding item to cart:', error);
         }
-    }, [user_id, fetchQuant, cartContext] )
-    
-    return(
-        <>
-        {showAlert && (
-        <Alert className=" border-0 position-fixed right-10 bottom-0 text-center animate-pulse transition-100 ease-out w-52 bg-red-500 text-white fw-bold" 
-        onClose={() => setShowAlert(false)} >
-            {alert}
-        </Alert>
-        )}
+    };
 
+    const removeFromCart = async () => {
+        try {
+            const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
+            setDoc(cart, { userUid: auth.currentUser.uid })
+            const cartItemsCollectionRef = collection(cart, 'cartItems');
+            const cartItemDocRef = doc(cartItemsCollectionRef, props.id);
+
+            const cartItemDoc = await getDoc(cartItemDocRef);
+
+            const currentQuantity = cartItemDoc.data().quantity;
+            if (currentQuantity > 1) {
+                await updateDoc(cartItemDocRef, {
+                    quantity: currentQuantity - 1
+                });
+            } else {
+                await deleteDoc(cartItemDocRef);
+            }
+            fetchCartItems();
+        }catch (error) {
+        console.error('Error adding item to cart:', error);
+    }
+}
+
+
+useEffect(() => {
+    fetchCartItems();
+}, []);
+
+return (
+    <>
         <Card className="border-rose-800 border-2 bg-transparent" >
             <Card.Header className="border-rose-800 bg-transparent text-center text-rose-800 fw-bold">
                 {props.name}
             </Card.Header>
-            <Card.Img src={img} className="h-64 object-cover rounded-none" />
-            {/* <Card.Body className="bg-rose-400">
-                    {props.desc}
-            </Card.Body> */}
+            {/* <Card.Img src={img} className="h-64 object-cover rounded-none" /> */}
+            <Card.Body className="bg-rose-400 text-sm">
+                {props.desc}
+            </Card.Body>
             <Card.Footer className="bg-transparent text-rose-800 border-rose-800 fw-bold d-flex justify-content-between align-items-center">
                 <div>
-                    $ {cost}
+                    $ {props.price}
                 </div>
-                { user.user? 
-                    (
-                        <ButtonGroup>
-                            <Button onClick={add}
-                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3" >
-                                +
-                            </Button>
-                            <Button className="bg-rose-600 border-0 text-white py-1 px-3" >
-                                {quant}
-                            </Button>
-                            <Button onClick={subtract}
-                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3" >
-                                -
-                            </Button>
-                        </ButtonGroup>
-                    )
-                    :(
-                    <button onClick={handleAdd}
+
+                {auth.currentUser ?
+                    <ButtonGroup>
+                        <Button onClick={addToCart}
+                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
+                            +
+                        </Button>
+                        <Button className="bg-rose-600 border-0 text-white py-1 px-3" >
+                            {quantity}
+                        </Button>
+                        <Button onClick={removeFromCart}
+                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
+                            -
+                        </Button>
+                    </ButtonGroup>
+                    :
+                    <button onClick={handleLogin}
                         className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3 rounded" >
                         Add
-                    </button>)
-                    
-                }
+                    </button>}
+                {login && <Login show={login} hide={handleClose} />}
+
             </Card.Footer>
         </Card>
-        {login && <Login show={login} hide={handleClose} /> }
 
-        </>
-    )
-    
+    </>
+ )
 }

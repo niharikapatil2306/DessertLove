@@ -1,4 +1,5 @@
 import Footer from '../components/Footer';
+import Menu from '../components/Menu';
 import MenuItem from '../components/MenuItem';
 import Navigation from '../components/Navigation';
 import ReservationContainer from '../components/ReservationContainer';
@@ -12,7 +13,7 @@ export default function Menus(props){
             heading={'PATISSERIES'}
             infoline={'DISCOVER OUR EXQUISITE MENU'} />
 
-            <MenuItem />
+            <Menu />
             <ReservationContainer />
             <Footer />
         </>

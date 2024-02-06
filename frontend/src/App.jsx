@@ -18,6 +18,7 @@ import bg6 from './assets/img/dessert55.png';
 import Blog1 from './pages/Blog1';
 import Blog2 from './pages/Blog2';
 import Blog3 from './pages/Blog3';
+import AdminForm from './components/AdminForm';
 
 
 function App() {
@@ -44,6 +45,8 @@ function App() {
         <Route path='/news/brewed-euphoria' element={<Blog3 />} />
 
         <Route path='/contact' element={<Contact bg={bg6} />} />
+        
+        <Route path='/admin' element={<AdminForm />} />
 
       </Routes>
     </>
