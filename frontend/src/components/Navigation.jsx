@@ -64,7 +64,7 @@ export default function Navigation(props) {
 
             <hr className="border-black" />
 
-            <Navbar expand='xl' className="mx-4">
+            <Navbar expand='xl' className="mx-4 flex">
 
                 <NavbarToggle aria-controls="navMenu" className="border-0" onClick={handleShowNav} />
 
@@ -109,6 +109,17 @@ export default function Navigation(props) {
 
                         <img src={user1} alt="" />
 
+                    </Button>
+
+                    <Button
+
+                            variant='white'
+                            className={`rounded-none text-sm font-medium ml-auto p-2 d-block w-max 
+                            ${user ? '' : 'd-none'}`}
+                            role="tooltip"
+                            title="CART">
+                            <img src={cart} alt="" />
+                            
                     </Button>
 
                     <User show={showUser} hide={handleUserClose} />

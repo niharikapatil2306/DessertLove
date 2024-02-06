@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dropdown, Image, Nav, NavbarBrand,  OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
-import NavbarOffcanvas from "react-bootstrap/esm/NavbarOffcanvas";
+import Offcanvas from "react-bootstrap/esm/NavbarOffcanvas";
 import { Outlet, NavLink } from "react-router-dom";
 
 import logo from "../assets/img/logo.png";
@@ -17,12 +17,12 @@ export default function NavigationMenu(props) {
 
     return (
         // className=' bg-gradient-to-t xl:bg-transparent from-rose-400 '>
-        <NavbarOffcanvas placement='top' 
+        <Offcanvas placement='end' 
             className="bg-rose-100"
             show={props.show} 
             onHide={props.hide} >
 
-            <OffcanvasHeader className="pb-0" closeButton>
+            <OffcanvasHeader className="pb-0 " closeButton>
 
                 <NavbarBrand>
                     <Image src={logo} fluid className="h-24" />
@@ -34,7 +34,7 @@ export default function NavigationMenu(props) {
 
             <OffcanvasBody className="xl:mx-auto">
 
-                <Nav>
+                <Nav className="p-0">
 
                     <NavLink to="/" 
                     className={(navLink) => (navLink.isActive ? 
@@ -171,6 +171,6 @@ export default function NavigationMenu(props) {
 
             <Outlet />
 
-        </NavbarOffcanvas>
+        </Offcanvas>
     );
 }

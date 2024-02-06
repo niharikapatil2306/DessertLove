@@ -18,10 +18,10 @@ body{
 font-face{
   font-family: "Font1";
   src: local("CormorantGaramond-Medium"),
-       url('./fonts/CormorantGaramond-Medium.ttf') format("truetype");
+       url('../src/assets/fonts/CormorantGaramond-Medium.ttf') format("truetype");
   font-family: "Font2";
   src: local("CormorantGaramond-Light"),
-       url('./fonts/CormorantGaramond-Regular.ttf') format("truetype");
+       url('../src/assets/fonts/CormorantGaramond-Regular.ttf') format("truetype");
 }
 
 .offcanvas1{ 

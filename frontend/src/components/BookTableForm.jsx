@@ -1,6 +1,7 @@
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
-import axios from "axios";
 import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
+import { auth, db } from "../firebase";
 
 export default function BookTableForm() {
     const count = ["No. of Person", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,26 +11,37 @@ export default function BookTableForm() {
     const [person, setPerson] = useState(0);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [error, setError] = useState("");
 
-    const postData = () => {
-        axios.post('http://127.0.0.1:8000/home/table', {
-            name: name,
-            person: person,
-            date: date,
-            time: time,
-            phone: phone,
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    };
-
-    let handleSubmit = async (e) => {
-        postData();
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const querySnapshot = await getDocs(
+                query(collection(db, "table"), where("date", "==", date))
+            );
+            const existingBookings = querySnapshot.docs.map((doc) => doc.data());
+            if (existingBookings.length > 0) {
+                setError("Booking for this date already exists.");
+            } else {
+                await addDoc(collection(db, "table"), {
+                name: name,
+                person: person,
+                date: date,
+                time: time, 
+                phone: phone,
+                userId: auth.currentUser.uid? auth.currentUser.uid : ""
+            });
+            setName("");
+            setPhone(0);
+            setPerson(0);
+            setDate("");
+            setTime("");
+            setError("");
+            window.location.href = '/'
+        }
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
     };
 
     return (
@@ -76,8 +88,11 @@ export default function BookTableForm() {
                 </Col>
             </Row>
             <Row>
-                <Button 
-                    className="text-black mt-8 mx-auto w-32 bg-rose-300 border-transparent hover:border-white rounded-none fw-bold hover:bg-rose-300" 
+                <div className="text-black text-lg text-center font-extrabold">
+                    {error}
+                </div>
+                <Button
+                    className="text-black mt-8 mx-auto w-32 bg-rose-300 border-transparent hover:border-white rounded-none fw-bold hover:bg-rose-300"
                     type="submit">
                     Book Now
                 </Button>
