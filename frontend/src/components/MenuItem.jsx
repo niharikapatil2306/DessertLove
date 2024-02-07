@@ -33,7 +33,7 @@ export default function MenuItem({category}) {
         <Container>
             <Row>
                 {item.map((menu) =>
-                    <Col xs={12} sm={6} lg={4} className="my-10" key={menu.id}>
+                    <Col xs={12} sm={6} lg={4} className="my-10 flex flex-wrap" key={menu.id}>
                         <Item id={menu.id} name={menu.itemName} price={menu.itemPrice} desc={menu.itemDesc} />
                     </Col>
                 )}

@@ -8,7 +8,6 @@ export default function Cart(props) {
 
     const [cart, setCart] = useState([])
     const [cost, setCost] = useState(0.0);
-    const [quant, setQuant] = useState(0)
 
     const fetchCartItems = async () => {
         try {
@@ -61,7 +60,6 @@ export default function Cart(props) {
 
                 setCart(menuItems);
                 setCost(totalCost);
-                setQuant(totalQuantity)
             } else {
                 setCart([])
             }
@@ -105,7 +103,7 @@ export default function Cart(props) {
                 {cart.map((menuItem) => (
                     <div key={menuItem.id}>
                         <CartItems menuItem={menuItem} />
-                        <div className="my-4 flex justify-between border-t-2 py-4 font-bold border-rose-950 border-opacity-50">
+                        <div className="mt-4 flex justify-between border-t-2 border-b-2 py-4 font-bold border-rose-950 border-opacity-50">
                             <p>
                                 Total:
                             </p>
@@ -113,6 +111,9 @@ export default function Cart(props) {
                                 ${cost}
                             </p>
                         </div>
+                        <Button className="bg-rose-300 w-full my-4 border-0 rounded-none font-bold hover:bg-rose-400">
+                            Checkout
+                        </Button>
                     </div>
                 ))}
 

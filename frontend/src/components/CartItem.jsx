@@ -50,7 +50,7 @@ export default function CartItems({ menuItem }) {
     return (
         <>
 
-            <Card className="bg-rose-400 w-full my-2 border-1 border-rose-950 font-bold hover:bg-rose-400">
+            <Card className="w-full my-2 border-1 border-rose-950 font-bold hover:bg-rose-400">
                 <CardHeader className="bg-rose-200">
                     {menuItem.name}
                 </CardHeader>
@@ -58,14 +58,14 @@ export default function CartItems({ menuItem }) {
 
                     <ButtonGroup>
                         <Button onClick={addToCart}
-                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3" >
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
                             +
                         </Button>
-                        <div className="bg-rose-400 border-0 hover:bg-rose-300 text-white py-1 px-3" >
+                        <div className="bg-rose-400 border-0 text-white p-1" >
                             {menuItem.quantity}
                         </div>
                         <Button onClick={removeFromCart}
-                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3" >
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
                             -
                         </Button>
                     </ButtonGroup>

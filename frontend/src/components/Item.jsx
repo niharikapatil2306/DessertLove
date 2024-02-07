@@ -96,44 +96,41 @@ export default function Item(props) {
 
 
     return (
-        <>
-            <Card className="border-rose-800 border-2 bg-transparent" >
-                <Card.Header className="border-rose-800 bg-transparent text-center text-rose-800 fw-bold">
-                    {props.name}
-                </Card.Header>
-                {/* <Card.Img src={img} className="h-64 object-cover rounded-none" /> */}
-                <Card.Body className="bg-rose-400 text-sm">
-                    {props.desc}
-                </Card.Body>
-                <Card.Footer className="bg-transparent text-rose-800 border-rose-800 fw-bold d-flex justify-content-between align-items-center">
-                    <div>
-                        $ {props.price}
-                    </div>
+        <Card className="border-rose-800 border-1 bg-rose-200 w-full h-full" >
+            <Card.Header className="border-rose-800 bg-transparent text-center text-rose-800 text-2xl font-extrabold">
+                {props.name}
+            </Card.Header>
+            {/* <Card.Img src={img} className="h-64 object-cover rounded-none" /> */}
+            <Card.Body className="bg-rose-50 text-lg font-medium md:text-xl">
+                {props.desc}
+            </Card.Body>
+            <Card.Footer className="bg-transparent text-rose-800 border-rose-800 text-lg font-bold d-flex justify-content-between align-items-center">
+                <div>
+                    $ {props.price}
+                </div>
 
-                    {auth.currentUser ?
-                        <ButtonGroup>
-                            <Button onClick={addToCart}
-                                className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
-                                +
-                            </Button>
-                            <Button className="bg-rose-600 border-0 text-white py-1 px-3" >
-                                {quantity}
-                            </Button>
-                            <Button onClick={removeFromCart}
-                                className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
-                                -
-                            </Button>
-                        </ButtonGroup>
-                        :
-                        <button onClick={handleLogin}
-                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3 rounded" >
-                            Add
-                        </button>}
-                    {login && <Login show={login} hide={handleClose} />}
+                {auth.currentUser ?
+                    <ButtonGroup className="bg-rose-400">
+                        <Button onClick={addToCart}
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
+                            +
+                        </Button>
+                        <div className="bg-rose-400 border-0 text-white p-1" >
+                            {quantity}
+                        </div>
+                        <Button onClick={removeFromCart}
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
+                            -
+                        </Button>
+                    </ButtonGroup>
+                    :
+                    <button onClick={handleLogin}
+                        className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3 rounded" >
+                        Add
+                    </button>}
+                {login && <Login show={login} hide={handleClose} />}
 
-                </Card.Footer>
-            </Card>
-
-        </>
+            </Card.Footer>
+        </Card>
     )
 }
