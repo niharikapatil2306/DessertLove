@@ -17,6 +17,7 @@ import Login from "../components/Login";
 import User from "../components/User";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import Cart from "./Cart";
 
 
 export default function Navigation(props) {
@@ -38,6 +39,10 @@ export default function Navigation(props) {
     const [showUser, setShowUser] = useState(false);
     const handleUserClose = () => setShowUser(false);
     const handleShowUser = () => setShowUser(true);
+
+    const [showCart, setShowCart] = useState(false);
+    const handleCartClose = () => setShowCart(false);
+    const handleShowCart = () => setShowCart(true);
 
     return (
         <Container fluid className="bg-cover bg-no-repeat container1 g-0 position-relative"
@@ -111,7 +116,9 @@ export default function Navigation(props) {
 
                     </Button>
 
-                    <Button
+                    <User show={showUser} hide={handleUserClose} />
+
+                    <Button onClick={handleShowCart}
 
                             variant='white'
                             className={`rounded-none text-sm font-medium ml-auto p-2 d-block w-max 
@@ -122,7 +129,7 @@ export default function Navigation(props) {
                             
                     </Button>
 
-                    <User show={showUser} hide={handleUserClose} />
+                    <Cart show={showCart} hide={handleCartClose} />
 
                 </div>
             </Navbar>

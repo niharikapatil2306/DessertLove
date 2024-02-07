@@ -10,7 +10,7 @@ export default function Menus(props){
             <Navigation bg={props.bg} 
             info={true} 
             buttonShow={false} 
-            heading={'PATISSERIES'}
+            heading={'MENU'}
             infoline={'DISCOVER OUR EXQUISITE MENU'} />
 
             <Menu />

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, ButtonGroup, Card } from "react-bootstrap";
+import { Button, ButtonGroup, Card } from "react-bootstrap";
 import Login from "../components/Login";
 import { auth, db } from "../firebase";
-import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 
 export default function Item(props) {
-
 
     const [login, setLogin] = useState(false);
     const [quantity, setQuantity] = useState(0);
@@ -32,7 +31,11 @@ export default function Item(props) {
     const addToCart = async () => {
         try {
             const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
-            setDoc(cart, { userUid: auth.currentUser.uid })
+            setDoc(cart, {
+                userUid: auth.currentUser.uid,
+                totalCost: 0,
+                totalQuantity: 0,
+            })
             const cartItemsCollectionRef = collection(cart, 'cartItems');
             const cartItemDocRef = doc(cartItemsCollectionRef, props.id);
 
@@ -58,7 +61,11 @@ export default function Item(props) {
     const removeFromCart = async () => {
         try {
             const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
-            setDoc(cart, { userUid: auth.currentUser.uid })
+            setDoc(cart, {
+                userUid: auth.currentUser.uid,
+                totalCost: 0,
+                totalQuantity: 0,
+            })
             const cartItemsCollectionRef = collection(cart, 'cartItems');
             const cartItemDocRef = doc(cartItemsCollectionRef, props.id);
 
@@ -73,55 +80,60 @@ export default function Item(props) {
                 await deleteDoc(cartItemDocRef);
             }
             fetchCartItems();
-        }catch (error) {
-        console.error('Error adding item to cart:', error);
+        } catch (error) {
+            console.error('Error adding item to cart:', error);
+        }
     }
-}
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            const unsubscribe = onSnapshot(collection(doc(collection(db, 'cart'), auth.currentUser.uid), "cartItems"), (snapshot) => {
+                fetchCartItems();
+            });
+            return () => unsubscribe();
+        }
+    }, []);
 
 
-useEffect(() => {
-    fetchCartItems();
-}, []);
+    return (
+        <>
+            <Card className="border-rose-800 border-2 bg-transparent" >
+                <Card.Header className="border-rose-800 bg-transparent text-center text-rose-800 fw-bold">
+                    {props.name}
+                </Card.Header>
+                {/* <Card.Img src={img} className="h-64 object-cover rounded-none" /> */}
+                <Card.Body className="bg-rose-400 text-sm">
+                    {props.desc}
+                </Card.Body>
+                <Card.Footer className="bg-transparent text-rose-800 border-rose-800 fw-bold d-flex justify-content-between align-items-center">
+                    <div>
+                        $ {props.price}
+                    </div>
 
-return (
-    <>
-        <Card className="border-rose-800 border-2 bg-transparent" >
-            <Card.Header className="border-rose-800 bg-transparent text-center text-rose-800 fw-bold">
-                {props.name}
-            </Card.Header>
-            {/* <Card.Img src={img} className="h-64 object-cover rounded-none" /> */}
-            <Card.Body className="bg-rose-400 text-sm">
-                {props.desc}
-            </Card.Body>
-            <Card.Footer className="bg-transparent text-rose-800 border-rose-800 fw-bold d-flex justify-content-between align-items-center">
-                <div>
-                    $ {props.price}
-                </div>
+                    {auth.currentUser ?
+                        <ButtonGroup>
+                            <Button onClick={addToCart}
+                                className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
+                                +
+                            </Button>
+                            <Button className="bg-rose-600 border-0 text-white py-1 px-3" >
+                                {quantity}
+                            </Button>
+                            <Button onClick={removeFromCart}
+                                className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
+                                -
+                            </Button>
+                        </ButtonGroup>
+                        :
+                        <button onClick={handleLogin}
+                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3 rounded" >
+                            Add
+                        </button>}
+                    {login && <Login show={login} hide={handleClose} />}
 
-                {auth.currentUser ?
-                    <ButtonGroup>
-                        <Button onClick={addToCart}
-                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
-                            +
-                        </Button>
-                        <Button className="bg-rose-600 border-0 text-white py-1 px-3" >
-                            {quantity}
-                        </Button>
-                        <Button onClick={removeFromCart}
-                            className="bg-rose-600 border-0 hover:bg-rose-800 text-white mx-auto px-3" >
-                            -
-                        </Button>
-                    </ButtonGroup>
-                    :
-                    <button onClick={handleLogin}
-                        className="bg-rose-600 border-0 hover:bg-rose-800 text-white py-1 px-3 rounded" >
-                        Add
-                    </button>}
-                {login && <Login show={login} hide={handleClose} />}
+                </Card.Footer>
+            </Card>
 
-            </Card.Footer>
-        </Card>
-
-    </>
- )
+        </>
+    )
 }

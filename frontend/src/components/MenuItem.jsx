@@ -15,7 +15,7 @@ export default function MenuItem({category}) {
             const querySnapshot = await getDocs(q);
             const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setItem(newData);
-            console.log(newData);
+
         } catch (error) {
             console.error("Error fetching menu items: ", error);
         }
@@ -28,6 +28,7 @@ export default function MenuItem({category}) {
     
         return () => unsubscribe();
     }, []);
+
     return (
         <Container>
             <Row>
