@@ -69,9 +69,9 @@ export default function User(props) {
                         <DropdownToggle className="bg-rose-300 border-0 rounded-none font-bold w-full hover:bg-rose-400 active:bg-rose-400 focus:bg-rose-300">
                             Bookings
                         </DropdownToggle>
-                        <DropdownMenu className="static bg-rose-600 bg-opacity-60">
+                        <DropdownMenu className="static bg-rose-500 bg-opacity-60">
                             {bookings.map((booking, index) => (
-                                <DropdownItem key={index} className="flex justify-between text-white font-medium hover:bg-rose-300">
+                                <DropdownItem key={index} className="flex justify-between text-white font-medium bg-rose-500 bg-opacity-60 hover:bg-rose-300">
                                     <p>
                                         Date: {booking.date} | 
                                     </p>
