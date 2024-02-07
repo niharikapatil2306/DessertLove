@@ -20,23 +20,23 @@ export default function Cart(props) {
             let totalQuantity = 0;
             let totalCost = 0.0;
             const cartItems = [];
-    
+
             if (!querySnapshot.empty) {
                 querySnapshot.forEach((doc) => {
                     cartItems.push({
                         id: doc.id,
                         quantity: doc.data().quantity
                     });
-                    totalQuantity+=doc.data().quantity
+                    totalQuantity += doc.data().quantity
                     updateDoc(cartRef, {
                         totalQuantity: totalQuantity
                     })
                 });
 
-                const menuItems =[]
+                const menuItems = []
 
                 for (const item of cartItems) {
-                    
+
                     const itemId = item.id
 
                     const menuItemDoc = await getDoc(doc(collection(db, "MenuItems"), itemId));
@@ -47,36 +47,36 @@ export default function Cart(props) {
                             name: menuItemDoc.data().itemName,
                             price: menuItemDoc.data().itemPrice,
                             quantity: item.quantity,
-                            totalPrice: (menuItemDoc.data().itemPrice*item.quantity)
+                            totalPrice: (menuItemDoc.data().itemPrice * item.quantity)
                         });
-                        totalCost+=(menuItemDoc.data().itemPrice*item.quantity);
+                        totalCost += (menuItemDoc.data().itemPrice * item.quantity);
                         updateDoc(cartRef, {
                             totalCost: totalCost
                         })
                     } else {
                         console.warn(`Menu item with ID ${itemId} not found.`);
                     }
-                    
+
                 }
 
                 setCart(menuItems);
                 setCost(totalCost);
-                setQuant(totalQuantity)          
-            }else{
+                setQuant(totalQuantity)
+            } else {
                 setCart([])
             }
-            
+
         } catch (error) {
             console.error('Error fetching cart items:', error);
         }
     };
 
     useEffect(() => {
-        if(auth.currentUser){
+        if (auth.currentUser) {
             const unsubscribe = onSnapshot(collection(doc(collection(db, 'cart'), auth.currentUser.uid), "cartItems"), (snapshot) => {
                 fetchCartItems();
             });
-        
+
             return () => unsubscribe();
         }
     }, [auth.currentUser]);
@@ -103,16 +103,19 @@ export default function Cart(props) {
             <OffcanvasBody className="flex flex-col">
 
                 {cart.map((menuItem) => (
-                    <div  key={menuItem.id}>
-                        <CartItems  menuItem={menuItem}/>
-
-                        {/* <p>Name: {menuItem.name}</p>
-                        <p>Price: ${menuItem.price}</p>
-                        <p>Quantity: {menuItem.quantity}</p>
-                        <p>Total Price: ${menuItem.totalPrice}</p> */}
+                    <div key={menuItem.id}>
+                        <CartItems menuItem={menuItem} />
+                        <div className="my-4 flex justify-between border-t-2 py-4 font-bold border-rose-950 border-opacity-50">
+                            <p>
+                                Total:
+                            </p>
+                            <p>
+                                ${cost}
+                            </p>
+                        </div>
                     </div>
-                    
                 ))}
+
             </OffcanvasBody>
 
         </Offcanvas>
