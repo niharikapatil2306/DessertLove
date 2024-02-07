@@ -58,14 +58,14 @@ export default function CartItems({ menuItem }) {
 
                     <ButtonGroup>
                         <Button onClick={addToCart}
-                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3" >
                             +
                         </Button>
                         <div className="bg-rose-400 border-0 text-white p-1" >
                             {menuItem.quantity}
                         </div>
                         <Button onClick={removeFromCart}
-                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3 active:bg-rose-300" >
+                            className="bg-rose-400 border-0 hover:bg-rose-300 text-white mx-auto px-3" >
                             -
                         </Button>
                     </ButtonGroup>

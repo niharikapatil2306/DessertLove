@@ -8,6 +8,7 @@ export default function Cart(props) {
 
     const [cart, setCart] = useState([])
     const [cost, setCost] = useState(0.0);
+    const [quant, setQuant] = useState(0);
 
     const fetchCartItems = async () => {
         try {
@@ -103,6 +104,15 @@ export default function Cart(props) {
                 {cart.map((menuItem) => (
                     <div key={menuItem.id}>
                         <CartItems menuItem={menuItem} />
+                    </div>
+                ))}
+
+                {cart.length == 0 ? (
+
+                    <>    </>
+                ) : (
+                    // Render this when cart is empty
+                    <>
                         <div className="mt-4 flex justify-between border-t-2 border-b-2 py-4 font-bold border-rose-950 border-opacity-50">
                             <p>
                                 Total:
@@ -114,8 +124,9 @@ export default function Cart(props) {
                         <Button className="bg-rose-300 w-full my-4 border-0 rounded-none font-bold hover:bg-rose-400">
                             Checkout
                         </Button>
-                    </div>
-                ))}
+                    </>
+                )}
+
 
             </OffcanvasBody>
 

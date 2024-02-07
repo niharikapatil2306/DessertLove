@@ -60,3 +60,7 @@ font-face{
   --bs-btn-hover-bg: transparent;
   --bs-btn-active-bg: transparent;
 }
+
+.btn-primary{
+    --bs-btn-active-bg: rgb(253 164 175);
+}
