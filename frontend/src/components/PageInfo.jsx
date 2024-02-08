@@ -9,7 +9,7 @@ export default function PageInfo(props) {
         <Container className="h-4/5 contain" fluid>
             <Row className="mx-0">
                 <Row >
-                    <Col className='text-center fs4 font-extrabold head'>
+                    <Col className='text-center fs1 font-extrabold head'>
                         {props.heading}
                     </Col>
                     <img src={star} alt="" className={`h-24 d-inline mx-2 ${props.info? '':'d-none'}`} />
