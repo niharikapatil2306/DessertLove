@@ -33,8 +33,6 @@ export default function Item(props) {
             const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
             setDoc(cart, {
                 userUid: auth.currentUser.uid,
-                totalCost: 0,
-                totalQuantity: 0,
             })
             const cartItemsCollectionRef = collection(cart, 'cartItems');
             const cartItemDocRef = doc(cartItemsCollectionRef, props.id);
@@ -63,8 +61,6 @@ export default function Item(props) {
             const cart = doc(collection(db, 'cart'), auth.currentUser.uid)
             setDoc(cart, {
                 userUid: auth.currentUser.uid,
-                totalCost: 0,
-                totalQuantity: 0,
             })
             const cartItemsCollectionRef = collection(cart, 'cartItems');
             const cartItemDocRef = doc(cartItemsCollectionRef, props.id);

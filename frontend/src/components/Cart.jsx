@@ -1,8 +1,9 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Container, Offcanvas, OffcanvasBody, OffcanvasHeader, OffcanvasTitle } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { auth, db } from "../firebase";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs, onSnapshot, updateDoc } from "firebase/firestore";
-import CartItems from "./CartItem";
+import CartItems from "./CartItems";
+import { Link } from "react-router-dom";
 
 export default function Cart(props) {
 
@@ -78,28 +79,11 @@ export default function Cart(props) {
 
             return () => unsubscribe();
         }
-    }, [auth.currentUser]);
+    }, [auth.currentUser,cost]);
 
     return (
 
-        <Offcanvas show={props.show}
-            onHide={props.hide}
-            placement="end"
-            className="bg-rose-100" >
-
-            <OffcanvasHeader closeButton className="bg-rose-300 justify-end" />
-
-            <OffcanvasTitle className="bg-rose-300 p-4 text-2xl">
-                <div className="font-bold">
-                    HELLO,&nbsp;
-                    {auth.currentUser ? auth.currentUser.displayName : (<></>)}
-                </div>
-                <div className="">
-                    YOUR Cart
-                </div>
-            </OffcanvasTitle>
-
-            <OffcanvasBody className="flex flex-col">
+            <>
 
                 {cart.map((menuItem) => (
                     <div key={menuItem.id}>
@@ -111,7 +95,6 @@ export default function Cart(props) {
 
                     <>    </>
                 ) : (
-                    // Render this when cart is empty
                     <>
                         <div className="mt-4 flex justify-between border-t-2 border-b-2 py-4 font-bold border-rose-950 border-opacity-50">
                             <p>
@@ -121,15 +104,13 @@ export default function Cart(props) {
                                 ${cost}
                             </p>
                         </div>
-                        <Button className="bg-rose-300 w-full my-4 border-0 rounded-none font-bold hover:bg-rose-400">
+                        <Button className={`bg-rose-300 w-full my-4 border-0 rounded-none font-bold hover:bg-rose-400 ${props.show ? '' : 'd-none'}`}>
+                            <Link to="/cart" path="relative">
                             Checkout
+                            </Link>
                         </Button>
                     </>
                 )}
-
-
-            </OffcanvasBody>
-
-        </Offcanvas>
+            </>
     );
 }

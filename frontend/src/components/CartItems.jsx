@@ -39,6 +39,9 @@ export default function CartItems({ menuItem }) {
                     quantity: currentQuantity - 1
                 });
             } else {
+                await updateDoc(cartItemDocRef, {
+                    quantity: currentQuantity - 1
+                });
                 await deleteDoc(cartItemDocRef);
             }
 

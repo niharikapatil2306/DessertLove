@@ -13,7 +13,7 @@ import Login from "../components/Login";
 import User from "../components/User";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
-import Cart from "./Cart";
+import CartContainer from "./CartContainer";
 
 
 export default function NavigationBar(){
@@ -101,7 +101,7 @@ export default function NavigationBar(){
                             
                     </Button>
 
-                    <Cart show={showCart} hide={handleCartClose} />
+                    <CartContainer show={showCart} hide={handleCartClose} />
 
                 </div>
             </Navbar>
