@@ -73,10 +73,10 @@ export default function User(props) {
                             {bookings.map((booking, index) => (
                                 <DropdownItem key={index} className="flex justify-between text-white font-medium bg-rose-500 bg-opacity-60 hover:bg-rose-300">
                                     <p>
-                                        Date: {booking.date} | 
+                                        Date: {booking.date} |
                                     </p>
                                     <p>
-                                        Time: {booking.time} | 
+                                        Time: {booking.time} |
                                     </p>
                                     <p>
                                         Persons: {booking.person}
@@ -94,7 +94,9 @@ export default function User(props) {
 
                 }
                 <Button className="bg-rose-300 my-2 border-0 rounded-none font-bold hover:bg-rose-400">
-                    Cart
+                    <Link to='/cart' className="hover:text-black">
+                        Cart
+                    </Link>
                 </Button>
                 <Button onClick={handleClick}
                     className="bg-rose-300 border-0 rounded-none font-bold hover:bg-rose-400">
