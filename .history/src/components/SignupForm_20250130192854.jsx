@@ -57,7 +57,7 @@ export default function SignupForm() {
 
     const handleGClick = () => {
         const provider = new GoogleAuthProvider();
-        signInWithRedirect(auth, provider);
+        signInWithPopup(auth, provider);
         if(auth.currentUser!=null){
             submit();
         }
