@@ -1,4 +1,4 @@
-# Sweet Experience - Pastry Shop Website
+# DessertLove - Pastry Shop Website
 
 A fully responsive, modern website for a pastry shop and cafe featuring online ordering, reservations, and blog content.
 
